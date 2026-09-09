@@ -1,15 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <PcHealthCheck />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import PcHealthCheck from './components/PcHealthCheck.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    PcHealthCheck
   }
 }
 </script>
