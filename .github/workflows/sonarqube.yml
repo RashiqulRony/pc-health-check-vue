@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - master
+
   pull_request:
     branches:
       - main
       - master
+
   workflow_dispatch:
 
 permissions:
@@ -16,8 +18,9 @@ permissions:
 
 jobs:
   sonarqube:
-    name: Test and SonarQube Analysis
+    name: Test, Build and Analyze
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout source code
@@ -31,17 +34,41 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Display environment versions
+        run: |
+          node --version
+          npm --version
+
       - name: Install dependencies
         run: npm ci
 
       - name: Run unit tests with coverage
         run: npm run test:coverage
 
+      - name: Verify coverage report
+        run: |
+          test -f coverage/lcov.info
+          echo "LCOV coverage report found."
+          ls -lh coverage/lcov.info
+
       - name: Build Vue application
         run: npm run build
 
+      - name: Test SonarQube connection
+        env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: |
+          echo "Checking SonarQube server..."
+          curl --fail \
+            --show-error \
+            --max-time 30 \
+            "${SONAR_HOST_URL}/api/system/status"
+
       - name: Run SonarQube analysis
         uses: SonarSource/sonarqube-scan-action@v7
+        with:
+          args: >
+            -Dsonar.verbose=true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}

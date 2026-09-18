@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
-    "dev": "vite",
-  "build": "vue-cli-service build",
-  "test": "vitest run",
-  "test:coverage": "vitest run --coverage"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "test": "vitest run --config vitest.config.mjs",
+    "test:watch": "vitest --config vitest.config.mjs",
+    "test:coverage": "vitest run --coverage --config vitest.config.mjs"
   },
   "dependencies": {
     "core-js": "^3.8.3",
@@ -17,7 +17,6 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
-    "@vitejs/plugin-vue": "^6.0.9",
     "@vitest/coverage-v8": "^5.0.1",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
